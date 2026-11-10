@@ -12,7 +12,7 @@
         #screen-start p { color: #aaa; font-size: 16px; }
         #screen-start button { background: #00ffcc; color: #000; border: none; padding: 18px 36px; font-size: 18px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,255,204,0.4); }
         #slide-container { flex: 1; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #000000; overflow: hidden; position: relative; min-height: 0; }
-        img { width: 100%; height: 100%; object-fit: fill; display: block; }
+        img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .controls { background: #0f172a; padding: 10px 8px; display: flex; gap: 6px; align-items: center; justify-content: space-between; width: 100%; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; flex-shrink: 0; }
         button.ctrl-btn { background-color: #1f1f1f; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px 8px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; flex: 1; text-align: center; }
         .btn-indice { background-color: #2c1f30; color: #ff9900; border-color: #ff9900; flex: 0.7; }
@@ -49,6 +49,14 @@
         audioFundo.src = "audios/AUDIO.mp3";
 
         function iniciarApp() {
+            // Força o modo de tela cheia real (Fullscreen) no telemóvel/PC ao clicar
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(err => {});
+            } else if (elem.webkitRequestFullscreen) { /* Safari/iOS */
+                elem.webkitRequestFullscreen();
+            }
+
             document.getElementById("screen-start").style.display = "none";
             atualizarSlide();
         }
