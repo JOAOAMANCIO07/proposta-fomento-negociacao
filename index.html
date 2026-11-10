@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>DJ Pankadao - App PDV</title>
-<style>
+    <title>Proposta de Fomento e Negociação</title>
+    <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         html, body { width: 100vw; height: 100vh; height: 100dvh; background-color: #000000; color: #ffffff; font-family: Arial, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: fixed; top: 0; left: 0; }
-        #screen-start { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: #050505; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; }
-        #screen-start button { background: #00ffcc; color: #000; border: none; padding: 20px 40px; font-size: 20px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,255,204,0.4); }
-        #slide-container { flex: 1; width: 100%; display: flex; justify-content: center; align-items: center; background: #000000; overflow: hidden; position: relative; min-height: 0; }
-        img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+        #screen-start { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: #050505; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; padding: 20px; text-align: center; }
+        #screen-start h2 { color: #00ffcc; font-size: 26px; letter-spacing: 1px; }
+        #screen-start p { color: #aaa; font-size: 16px; }
+        #screen-start button { background: #00ffcc; color: #000; border: none; padding: 18px 36px; font-size: 18px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,255,204,0.4); }
+        #slide-container { flex: 1; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #000000; overflow: hidden; position: relative; min-height: 0; }
+        img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .controls { background: #0f172a; padding: 12px 10px; display: flex; gap: 8px; align-items: center; justify-content: space-between; width: 100%; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; flex-shrink: 0; }
         button.ctrl-btn { background-color: #1f1f1f; color: #00ffcc; border: 1px solid #00ffcc; padding: 12px 10px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; flex: 1; text-align: center; }
         .btn-indice { background-color: #2c1f30; color: #ff9900; border-color: #ff9900; flex: 0.7; }
@@ -20,8 +22,8 @@
 </head>
 <body>
     <div id="screen-start">
-        <h2 style="color: #00ffcc; font-size: 24px;">DJ PANKADAO PDV</h2>
-        <p style="color: #aaa;">Toque no botão para iniciar a apresentação</p>
+        <h2>PROPOSTA DE FOMENTO E NEGOCIAÇÃO</h2>
+        <p>Toque no botão abaixo para iniciar a apresentação</p>
         <button onclick="iniciarApp()">INICIAR APRESENTAÇÃO</button>
     </div>
     <div id="slide-container">
@@ -45,11 +47,12 @@
         const imgElement = document.getElementById("slide-img");
         const counterElement = document.getElementById("counter");
         audioFundo.src = "audios/AUDIO.mp3";
+
         function iniciarApp() {
             document.getElementById("screen-start").style.display = "none";
-            audioFundo.play().catch(function(e) { console.log("Erro áudio fundo"); });
             atualizarSlide();
         }
+
         function atualizarSlide() {
             imgElement.src = "imagens_slides/slide_" + currentSlide + ".png";
             counterElement.textContent = currentSlide + " / " + totalSlides;
@@ -57,37 +60,44 @@
             audioNarracao.pause();
             audioNarracao.currentTime = 0;
             
+            // Regra rigorosa: Slides 1, 2 e 3 ficam absolutamente mudos (sem fundo e sem narração)
             if (currentSlide >= 1 && currentSlide <= 3) {
-                if (audioFundo.paused) { audioFundo.play().catch(e => {}); }
+                audioFundo.pause();
+                audioFundo.currentTime = 0;
                 return;
             }
             
+            // A partir do slide 4 em diante: gerencia narração ou áudio de fundo
             if (narracoes[currentSlide]) {
                 audioFundo.pause();
                 audioNarracao.src = narracoes[currentSlide];
                 audioNarracao.load();
-                audioNarracao.play().catch(function(e) { console.log("Erro narração"); });
+                audioNarracao.play().catch(function(e) { console.log("Aguardando interação para narração"); });
             } else {
                 audioNarracao.pause();
                 if (audioFundo.paused) {
-                    audioFundo.play().catch(function(e) { console.log("Erro fundo"); });
+                    audioFundo.play().catch(function(e) { console.log("Aguardando interação para áudio de fundo"); });
                 }
             }
         }
+
         function mudarSlide(direcao) {
             currentSlide += direcao;
             if (currentSlide > totalSlides) { currentSlide = totalSlides; }
             else if (currentSlide < 1) { currentSlide = 1; }
             atualizarSlide();
         }
+
         function irParaIndice() {
             currentSlide = 1;
             atualizarSlide();
         }
+
         function pararAudio() {
             audioNarracao.pause();
             audioNarracao.currentTime = 0;
             audioFundo.pause();
+            audioFundo.currentTime = 0;
         }
     </script>
 </body>
