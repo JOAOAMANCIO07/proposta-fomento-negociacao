@@ -23,7 +23,7 @@
 <body>
     <div id="screen-start">
         <h2>PITCH DA APRESENTAÇÃO DE FOMENTO DE NEGÓCIO</h2>
-        <p>Toque no botão abaixo para iniciar a apresentação</p>
+        <p>📱 Gire o celular deitado (horizontal) para melhor visualização</p>
         <button onclick="iniciarApp()">INICIAR APRESENTAÇÃO</button>
     </div>
     <div id="slide-container">
@@ -50,10 +50,21 @@
 
         function iniciarApp() {
             let elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen().catch(err => {});
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen();
+            
+            // 1. Solicita Tela Cheia
+            let reqFS = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.msRequestFullscreen;
+            if (reqFS) {
+                reqFS.call(elem).then(() => {
+                    // 2. Força a rotação Horizontal (Landscape) no Android/Chrome
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock("landscape").catch(err => console.log("Rotação não suportada:", err));
+                    }
+                }).catch(err => {
+                    // Fallback de tentar a rotação mesmo se o Fullscreen for negado
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock("landscape").catch(e => {});
+                    }
+                });
             }
 
             document.getElementById("screen-start").style.display = "none";
