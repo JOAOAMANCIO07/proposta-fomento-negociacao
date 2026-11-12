@@ -79,6 +79,7 @@
                 audioNarracao.play().catch(function(e) { console.log("Aguardando narração"); });
             } else {
                 audioNarracao.pause();
+pula_bloco:
                 if (audioFundo.paused) {
                     audioFundo.play().catch(function(e) { console.log("Aguardando fundo"); });
                 }
