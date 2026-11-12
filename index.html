@@ -20,7 +20,7 @@
 </head>
 <body>
     <div id="screen-start" onclick="iniciarApp()">
-        <img src="inicio.jpg" alt="Iniciar Apresentação">
+        <img src="INICIO.jpg" alt="Iniciar Apresentação">
     </div>
     <div id="slide-container">
         <img id="slide-img" src="" alt="Slide">
@@ -79,7 +79,6 @@
                 audioNarracao.play().catch(function(e) { console.log("Aguardando narração"); });
             } else {
                 audioNarracao.pause();
-pula_bloco:
                 if (audioFundo.paused) {
                     audioFundo.play().catch(function(e) { console.log("Aguardando fundo"); });
                 }
