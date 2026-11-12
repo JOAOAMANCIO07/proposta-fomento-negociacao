@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pitch Fomento de Negócio</title>
+
+<!-- Tags para o botão aparecer clicável no WhatsApp -->
+<meta property="og:title" content="Pitch da Apresentação de Fomento de Negócio" />
+<meta property="og:description" content="Toque na imagem para acessar a apresentação." />
+<meta property="og:image" content="https://github.io" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:url" content="https://github.io" />
+<meta property="og:type" content="website" />
+
 <style>
   body {
     background-color: #121218;
@@ -12,14 +21,16 @@
     align-items: center;
     height: 100vh;
     margin: 0;
+    padding: 16px;
+    box-sizing: border-box;
   }
   .link-botao {
     display: inline-block;
     transition: transform 0.2s ease, filter 0.2s ease;
   }
   .link-botao:hover {
-    transform: scale(1.03); /* Dá um leve zoom elegante quando o mouse passa por cima */
-    filter: brightness(1.1); /* Dá um brilho extra */
+    transform: scale(1.03);
+    filter: brightness(1.1);
   }
   .link-botao img {
     max-width: 100%;
@@ -32,7 +43,7 @@
 <body>
 
   <!-- O link abaixo envolve a sua imagem. Quando clicarem na foto, abre o destino. -->
-  <a href="https://joaoamancio07.github.io/proposta-fomento-negociacao/" target="_blank" class="link-botao">
+  <a href="https://joaoamancio07.github.io/proposta-fomento-negociacao/" class="link-botao">
     <img src="BOTAO.jpg" alt="Pitch da Apresentação de Fomento de Negócio">
   </a>
 
