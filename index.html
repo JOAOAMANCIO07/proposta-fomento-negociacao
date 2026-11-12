@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Pitch da Apresentação de Fomento de Negócio</title>
+    <title>Pitch da Apresenta��o de Fomento de Neg�cio</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         html, body { width: 100vw; height: 100vh; height: 100dvh; background-color: #000000; color: #ffffff; font-family: Arial, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: fixed; top: 0; left: 0; }
-        #screen-start { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: #050505; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; padding: 20px; text-align: center; }
-        #screen-start h2 { color: #00ffcc; font-size: 24px; letter-spacing: 1px; line-height: 1.3; max-width: 90%; }
-        #screen-start p { color: #aaa; font-size: 16px; }
-        #screen-start button { background: #00ffcc; color: #000; border: none; padding: 18px 36px; font-size: 18px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,255,204,0.4); }
+        #screen-start { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: #000000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; cursor: pointer; }
+        #screen-start img { max-width: 90%; max-height: 85vh; object-fit: contain; border-radius: 12px; box-shadow: 0 0 25px rgba(0,255,204,0.3); transition: transform 0.2s ease; }
+        #screen-start img:hover { transform: scale(1.02); }
         #slide-container { flex: 1; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #000000; overflow: hidden; position: relative; min-height: 0; }
         img { width: 100%; height: 100%; object-fit: fill; display: block; }
         .controls { background: #0f172a; padding: 10px 8px; display: flex; gap: 6px; align-items: center; justify-content: space-between; width: 100%; border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000; flex-shrink: 0; }
@@ -21,10 +20,8 @@
     </style>
 </head>
 <body>
-    <div id="screen-start">
-        <h2>PITCH DA APRESENTAÇÃO DE FOMENTO DE NEGÓCIO</h2>
-        <p>📱 Gire o celular deitado (horizontal) para melhor visualização</p>
-        <button onclick="iniciarApp()">INICIAR APRESENTAÇÃO</button>
+    <div id="screen-start" onclick="iniciarApp()">
+        <img src="inicio.jpg" alt="Iniciar Apresenta��o">
     </div>
     <div id="slide-container">
         <img id="slide-img" src="" alt="Slide">
@@ -47,50 +44,40 @@
         const imgElement = document.getElementById("slide-img");
         const counterElement = document.getElementById("counter");
         audioFundo.src = "audios/AUDIO.mp3";
-
+        
         function iniciarApp() {
             let elem = document.documentElement;
-            
-            // 1. Solicita Tela Cheia
             let reqFS = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.msRequestFullscreen;
             if (reqFS) {
                 reqFS.call(elem).then(() => {
-                    // 2. Força a rotação Horizontal (Landscape) no Android/Chrome
                     if (screen.orientation && screen.orientation.lock) {
-                        screen.orientation.lock("landscape").catch(err => console.log("Rotação não suportada:", err));
+                        screen.orientation.lock("landscape").catch(err => console.log("Rota��o n�o suportada:", err));
                     }
                 }).catch(err => {
-                    // Fallback de tentar a rotação mesmo se o Fullscreen for negado
                     if (screen.orientation && screen.orientation.lock) {
                         screen.orientation.lock("landscape").catch(e => {});
                     }
                 });
             }
-
             document.getElementById("screen-start").style.display = "none";
             atualizarSlide();
         }
-
+        
         function atualizarSlide() {
             imgElement.src = "imagens_slides/slide_" + currentSlide + ".png";
             counterElement.textContent = currentSlide + " / " + totalSlides;
-            
             audioNarracao.pause();
             audioNarracao.currentTime = 0;
-            
-            // Slides 1, 2 e 3 estritamente mudos
             if (currentSlide >= 1 && currentSlide <= 3) {
                 audioFundo.pause();
                 audioFundo.currentTime = 0;
                 return;
             }
-            
-            // A partir do slide 4
             if (narracoes[currentSlide]) {
                 audioFundo.pause();
                 audioNarracao.src = narracoes[currentSlide];
                 audioNarracao.load();
-                audioNarracao.play().catch(function(e) { console.log("Aguardando narração"); });
+                audioNarracao.play().catch(function(e) { console.log("Aguardando narra��o"); });
             } else {
                 audioNarracao.pause();
                 if (audioFundo.paused) {
@@ -98,19 +85,16 @@
                 }
             }
         }
-
         function mudarSlide(direcao) {
             currentSlide += direcao;
             if (currentSlide > totalSlides) { currentSlide = totalSlides; }
             else if (currentSlide < 1) { currentSlide = 1; }
             atualizarSlide();
         }
-
         function irParaIndice() {
             currentSlide = 1;
             atualizarSlide();
         }
-
         function pararAudio() {
             audioNarracao.pause();
             audioNarracao.currentTime = 0;
